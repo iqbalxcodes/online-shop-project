@@ -1,0 +1,23 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #222;
+    background:#fafafa;
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+color: inherit;
+}
+
+button,
+input {
+    font: inherit;
+}
