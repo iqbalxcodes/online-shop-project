@@ -1,5 +1,5 @@
 // productService.js
-const API_URL = import.meta.env.VITE_API_URL || "https://online-shop-api-w40i.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "https://online-shop-project-gfe0.onrender.com";
 
 export async function getProducts() {
     const response = await fetch(`${API_URL}/api/products`);

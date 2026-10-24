@@ -1,5 +1,5 @@
 // authService.js
-const API_URL = import.meta.env.VITE_API_URL || "https://online-shop-api-w40i.onrender.com/api/users";
+const API_URL = (import.meta.env.VITE_API_URL || "https://online-shop-project-gfe0.onrender.com") + "/api/users";
 
 export async function register(name, email, password) {
     const response = await fetch(`${API_URL}/register`, {
