@@ -1,4 +1,4 @@
-
+// App.jsx
 import { useEffect } from 'react'
 import { Routes, Route, BrowserRouter, useLocation } from 'react-router-dom'
 import ReactGA from 'react-ga4'
@@ -12,6 +12,7 @@ import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import Profile from './pages/Profile.jsx'
+import Cart from './pages/Cart.jsx'
 
 const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID
 
@@ -52,6 +53,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart />
             </ProtectedRoute>
           }
         />

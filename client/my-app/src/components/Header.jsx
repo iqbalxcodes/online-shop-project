@@ -21,6 +21,7 @@ export default function Header() {
 
                 {token ? (
                     <>
+                        <Link to="/cart">Keranjang</Link>{" "}
                         <Link to="/profile">Profil</Link>{" "}
                         <button onClick={handleLogout}>Logout</button>
                     </>

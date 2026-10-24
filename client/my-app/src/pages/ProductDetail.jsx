@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getProductById } from '../services/productService.js'
+import { addToCart } from '../services/cartService.js'
 import './productDetail.css'
 
 export default function ProductDetail() {
     const { id } = useParams()
+    const navigate = useNavigate()
 
     const [product, setProduct] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
+    const [notice, setNotice] = useState("")
 
     useEffect(() => {
         let active = true
@@ -38,6 +41,20 @@ export default function ProductDetail() {
             active = false
         }
     }, [id])
+
+    async function handleAdd() {
+        if (!localStorage.getItem("token")) {
+            navigate("/login")
+            return
+        }
+
+        try {
+            await addToCart(product._id)
+            setNotice("Ditambahkan ke keranjang")
+        } catch (err) {
+            setNotice(err.message)
+        }
+    }
 
     if (loading) {
         return (
@@ -87,9 +104,12 @@ export default function ProductDetail() {
                     <button
                         type="button"
                         disabled={product.stock <= 0}
+                        onClick={handleAdd}
                     >
                         Tambah ke Keranjang
                     </button>
+
+                    <p role="status">{notice}</p>
                 </div>
             </div>
         </section>

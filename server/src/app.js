@@ -6,6 +6,7 @@ import morgan from "morgan";
 import cors from "cors";
 import productRoutes from "./routes/product.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import cartRoutes from "./routes/cart.routes.js"
 
 import mongoose from "mongoose";
 import { config } from "./config.js";
@@ -23,7 +24,7 @@ app.use(express.json());
 app.get("/", (req, res) => res.json({ message: "API is running" }));
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/cart", cartRoutes);
 
-// (middleware error akan ditambahkan di topik 4)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server on http://localhost:${PORT}`));
