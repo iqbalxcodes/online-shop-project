@@ -1,60 +1,63 @@
-
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import FormField from "../components/FormField.jsx";
 import { login } from "../services/authService";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Kembali ke halaman yang tadi diminta (misalnya /checkout), kalau ada
+    const redirectTo = location.state?.from || "/";
 
     async function handleSubmit(event) {
         event.preventDefault();
         setError("");
+        setLoading(true);
 
         try {
             await login(email, password);
-            navigate("/");
-        } catch (error) {
-            setError(error.message);
+            navigate(redirectTo, { replace: true });
+        } catch (err) {
+            setError(err.message);
+            setLoading(false);
         }
     }
 
     return (
-        <div>
-            <h1>Login</h1>
+        <section className="page-section">
+            <div className="card auth-card">
+                <h1>Login</h1>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(event) => setEmail(event.target.value)}
-                        required
-                    />
-                </div>
+                {location.state?.from && <p className="muted">Silakan login dulu untuk melanjutkan.</p>}
+                {location.state?.registered && <p className="alert alert-success">Registrasi berhasil. Silakan login.</p>}
+                {error && <p className="alert alert-error" role="alert">{error}</p>}
 
-                <div>
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        required
-                    />
-                </div>
+                <form onSubmit={handleSubmit}>
+                    <FormField label="Email" htmlFor="email">
+                        <input id="email" type="email" value={email} autoComplete="email"
+                            onChange={(event) => setEmail(event.target.value)} required />
+                    </FormField>
 
-                <button type="submit">Login</button>
-            </form>
+                    <FormField label="Password" htmlFor="password">
+                        <input id="password" type="password" value={password} autoComplete="current-password"
+                            onChange={(event) => setPassword(event.target.value)} required />
+                    </FormField>
 
-            {error && <p>{error}</p>}
+                    <button type="submit" className="btn btn-block" disabled={loading}>
+                        {loading ? "Memproses..." : "Login"}
+                    </button>
+                </form>
 
-            <p>
-                Belum punya akun? <Link to="/register">Register</Link>
-            </p>
-        </div>
+                <p>
+                    Belum punya akun? <Link to="/register">Register</Link>
+                </p>
+            </div>
+        </section>
     );
 }
 

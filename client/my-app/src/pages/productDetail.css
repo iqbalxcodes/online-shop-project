@@ -60,3 +60,13 @@
     background: #aaa;
     cursor: not-allowed;
 }
+@media (max-width: 768px) {
+    .product-detail-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .product-detail-image {
+        width: 100%;
+    }
+}

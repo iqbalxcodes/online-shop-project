@@ -48,3 +48,21 @@
         flex-wrap: wrap;
     }
 }
+.cart-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+    .cart-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cart-footer .cart-total {
+        text-align: left;
+    }
+}

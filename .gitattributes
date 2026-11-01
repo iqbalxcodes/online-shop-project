@@ -1,0 +1,2 @@
+# Script shell harus memakai akhir baris Unix (LF), juga di Windows
+*.sh text eol=lf

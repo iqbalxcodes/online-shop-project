@@ -1,6 +1,6 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import FormField from "../components/FormField.jsx";
 import { register } from "../services/authService";
 
 function Register() {
@@ -8,68 +8,59 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [message, setMessage] = useState("");
+    const [fieldErrors, setFieldErrors] = useState({});
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     async function handleSubmit(event) {
         event.preventDefault();
         setError("");
-        setMessage("");
+        setFieldErrors({});
+        setLoading(true);
 
         try {
             await register(name, email, password);
-            setMessage("Registrasi berhasil. Silakan login.");
-            navigate("/login");
-        } catch (error) {
-            setError(error.message);
+            navigate("/login", { state: { registered: true } });
+        } catch (err) {
+            setError(err.message);
+            setFieldErrors(err.details || {});
+            setLoading(false);
         }
     }
 
     return (
-        <div>
-            <h1>Register</h1>
+        <section className="page-section">
+            <div className="card auth-card">
+                <h1>Register</h1>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Nama</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(event) => setName(event.target.value)}
-                        required
-                    />
-                </div>
+                {error && <p className="alert alert-error" role="alert">{error}</p>}
 
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(event) => setEmail(event.target.value)}
-                        required
-                    />
-                </div>
+                <form onSubmit={handleSubmit}>
+                    <FormField label="Nama" htmlFor="name" error={fieldErrors.name}>
+                        <input id="name" type="text" value={name} autoComplete="name"
+                            onChange={(event) => setName(event.target.value)} required minLength={2} maxLength={50} />
+                    </FormField>
 
-                <div>
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        required
-                    />
-                </div>
+                    <FormField label="Email" htmlFor="email" error={fieldErrors.email}>
+                        <input id="email" type="email" value={email} autoComplete="email"
+                            onChange={(event) => setEmail(event.target.value)} required />
+                    </FormField>
 
-                <button type="submit">Register</button>
-            </form>
+                    <FormField label="Password" htmlFor="password" error={fieldErrors.password} hint="Minimal 6 karakter">
+                        <input id="password" type="password" value={password} autoComplete="new-password"
+                            onChange={(event) => setPassword(event.target.value)} required minLength={6} />
+                    </FormField>
 
-            {error && <p>{error}</p>}
-            {message && <p>{message}</p>}
+                    <button type="submit" className="btn btn-block" disabled={loading}>
+                        {loading ? "Memproses..." : "Register"}
+                    </button>
+                </form>
 
-            <p>
-                Sudah punya akun? <Link to="/login">Login</Link>
-            </p>
-        </div>
+                <p>
+                    Sudah punya akun? <Link to="/login">Login</Link>
+                </p>
+            </div>
+        </section>
     );
 }
 

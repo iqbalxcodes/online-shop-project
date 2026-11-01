@@ -42,7 +42,7 @@ export default function Products() {
         <div className="products-grid">
             {products.map((product) => (
                 <ProductCard
-                    key={product.id}
+                    key={product._id}
                     product = {product}
                     onClick={() => navigate(`/products/${product._id}`)}
                 />

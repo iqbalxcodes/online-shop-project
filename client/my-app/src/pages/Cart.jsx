@@ -71,7 +71,10 @@ export default function Cart() {
                         </div>
                     ))}
 
-                    <p className="cart-total">Total: Rp {total.toLocaleString("id-ID")}</p>
+                    <div className="cart-footer">
+                        <p className="cart-total">Total: Rp {total.toLocaleString("id-ID")}</p>
+                        <Link to="/checkout" className="btn btn-large">Lanjut ke Checkout</Link>
+                    </div>
                 </>
             )}
         </section>

@@ -1,26 +1,16 @@
 // productService.js
-const API_URL = import.meta.env.VITE_API_URL || "https://online-shop-project-gfe0.onrender.com";
+import { request } from "./api.js";
 
-export async function getProducts() {
-    const response = await fetch(`${API_URL}/api/products`);
-
-    if (!response.ok) {
-        throw new Error("Gagal mengambil produk");
-    }
-
-    return response.json();
+export function getProducts() {
+    return request("/api/products");
 }
 
 export async function getProductById(id) {
-    const response = await fetch(`${API_URL}/api/products/${id}`);
-
-    if (!response.ok) {
-        if (response.status === 404) {
-            return null;
-        }
-
-        throw new Error("Gagal mengambil produk");
+    try {
+        return await request(`/api/products/${id}`);
+    } catch (error) {
+        // 404 = produk tidak ada, 400 = format id salah
+        if (error.status === 404 || error.status === 400) return null;
+        throw error;
     }
-
-    return response.json();
 }

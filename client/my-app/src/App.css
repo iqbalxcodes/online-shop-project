@@ -73,3 +73,205 @@
 .detail-image {
 width: 480px;
 }
+
+/* ---------- Tambahan: layout umum, form, tombol, status ---------- */
+.main {
+    min-height: 60vh;
+}
+
+.brand {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.nav {
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.nav a.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+}
+
+.btn-small {
+    padding: 6px 10px;
+}
+
+.btn-large {
+    padding: 12px 20px;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    margin-top: 8px;
+}
+
+.btn-outline {
+    background: white;
+    color: #222;
+    border: 1px solid #222;
+}
+
+.btn-danger {
+    background: #b42318;
+}
+
+.btn-danger-text {
+    color: #b42318;
+    border-color: #b42318;
+}
+
+.card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.card h2 {
+    font-size: 18px;
+    margin: 0 0 12px;
+}
+
+.card h2:not(:first-child) {
+    margin-top: 20px;
+}
+
+.muted {
+    color: #666;
+    margin: 4px 0;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 14px;
+    flex: 1;
+}
+
+.form-field label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
+}
+
+.form-field textarea {
+    resize: vertical;
+    font: inherit;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    outline: 2px solid #222;
+    outline-offset: 1px;
+}
+
+.form-field.has-error input,
+.form-field.has-error textarea {
+    border-color: #b42318;
+}
+
+.form-field .hint {
+    color: #666;
+}
+
+.field-error {
+    color: #b42318;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.input-short {
+    max-width: 160px;
+}
+
+.alert {
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin: 12px 0;
+}
+
+.alert-error {
+    background: #fef3f2;
+    color: #b42318;
+    border: 1px solid #fecdca;
+}
+
+.alert-success {
+    background: #ecfdf3;
+    color: #067647;
+    border: 1px solid #abefc6;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+    background: #eee;
+    white-space: nowrap;
+}
+
+.status-pending { background: #fffaeb; color: #b54708; }
+.status-paid { background: #eff8ff; color: #175cd3; }
+.status-shipped { background: #f4f3ff; color: #5925dc; }
+.status-completed { background: #ecfdf3; color: #067647; }
+.status-cancelled { background: #f2f4f7; color: #475467; }
+
+.auth-card {
+    max-width: 420px;
+    margin: 20px auto;
+}
+
+.auth-card h1 {
+    margin-top: 0;
+}
+
+@media (max-width: 640px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .nav {
+        gap: 12px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .input-short {
+        max-width: none;
+    }
+}

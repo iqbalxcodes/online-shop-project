@@ -12,6 +12,7 @@ export default function ProductDetail() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
     const [notice, setNotice] = useState("")
+    const [added, setAdded] = useState(false)
 
     useEffect(() => {
         let active = true
@@ -50,9 +51,11 @@ export default function ProductDetail() {
 
         try {
             await addToCart(product._id)
-            setNotice("Ditambahkan ke keranjang")
+            setNotice("Ditambahkan ke keranjang.")
+            setAdded(true)
         } catch (err) {
             setNotice(err.message)
+            setAdded(false)
         }
     }
 
@@ -109,7 +112,9 @@ export default function ProductDetail() {
                         Tambah ke Keranjang
                     </button>
 
-                    <p role="status">{notice}</p>
+                    <p role="status">
+                        {notice} {added && <Link to="/cart">Lihat keranjang</Link>}
+                    </p>
                 </div>
             </div>
         </section>

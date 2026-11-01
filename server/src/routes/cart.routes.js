@@ -14,33 +14,51 @@ const out = async (cart, res) => {
 };
 const badQty = (qty) => !Number.isInteger(qty) || qty < 1;
 
+// GET /api/cart
 router.get("/", async (req, res) => out(await load(req.userId), res));
 
+// POST /api/cart  { productId, qty }
 router.post("/", async (req, res) => {
-    const { productId, qty = 1 } = req.body;
+    const { productId, qty = 1 } = req.body ?? {};
     if (badQty(qty)) return res.status(400).json({ error: "Qty tidak valid" });
-    if (!mongoose.isValidObjectId(productId) || !(await Product.exists({ _id: productId }))) {
-        return res.status(404).json({ error: "Produk tidak ditemukan" });
-    }
+
+    const product = mongoose.isValidObjectId(productId) ? await Product.findById(productId) : null;
+    if (!product) return res.status(404).json({ error: "Produk tidak ditemukan" });
+
     const cart = await load(req.userId);
     const item = cart.items.find((i) => i.product.equals(productId));
-    if (item) item.qty += qty;
+    const newQty = (item ? item.qty : 0) + qty;
+
+    if (newQty > product.stock) {
+        return res.status(400).json({ error: `Stok tidak cukup (tersisa ${product.stock})` });
+    }
+
+    if (item) item.qty = newQty;
     else cart.items.push({ product: productId, qty });
     await cart.save();
     await out(cart, res);
 });
 
+// PATCH /api/cart/:productId  { qty }
 router.patch("/:productId", async (req, res) => {
-    const { qty } = req.body;
+    const { qty } = req.body ?? {};
     if (badQty(qty)) return res.status(400).json({ error: "Qty tidak valid" });
+
     const cart = await load(req.userId);
     const item = cart.items.find((i) => i.product.equals(req.params.productId));
     if (!item) return res.status(404).json({ error: "Item tidak ada di keranjang" });
+
+    const product = await Product.findById(req.params.productId);
+    if (product && qty > product.stock) {
+        return res.status(400).json({ error: `Stok tidak cukup (tersisa ${product.stock})` });
+    }
+
     item.qty = qty;
     await cart.save();
     await out(cart, res);
 });
 
+// DELETE /api/cart/:productId
 router.delete("/:productId", async (req, res) => {
     const cart = await load(req.userId);
     cart.items = cart.items.filter((i) => !i.product.equals(req.params.productId));

@@ -1,10 +1,10 @@
-
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../services/authService";
+import useAuth from "../hooks/useAuth.js";
 
 export default function Header() {
     const navigate = useNavigate();
-    const token = localStorage.getItem("token");
+    const loggedIn = useAuth();
 
     function handleLogout() {
         logout();
@@ -13,22 +13,22 @@ export default function Header() {
 
     return (
         <header className="header">
-            <strong>Online Shop</strong>
+            <Link to="/" className="brand">Online Shop</Link>
 
-            <nav>
-                <Link to="/">Home</Link>{" "}
-                <Link to="/products">Katalog Produk</Link>{" "}
+            <nav className="nav">
+                <NavLink to="/" end>Home</NavLink>
+                <NavLink to="/products">Katalog Produk</NavLink>
 
-                {token ? (
+                {loggedIn ? (
                     <>
-                        <Link to="/cart">Keranjang</Link>{" "}
-                        <Link to="/profile">Profil</Link>{" "}
-                        <button onClick={handleLogout}>Logout</button>
+                        <NavLink to="/cart">Keranjang</NavLink>
+                        <NavLink to="/profile">Profil</NavLink>
+                        <button className="btn btn-small" onClick={handleLogout}>Logout</button>
                     </>
                 ) : (
                     <>
-                        <Link to="/login">Login</Link>{" "}
-                        <Link to="/register">Register</Link>
+                        <NavLink to="/login">Login</NavLink>
+                        <NavLink to="/register">Register</NavLink>
                     </>
                 )}
             </nav>
